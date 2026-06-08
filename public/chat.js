@@ -11,3 +11,17 @@ const li=document.createElement('li');
 li.innerHTML='<b>'+msg.sender+'</b>: '+msg.text;
 messages.appendChild(li);
 }
+const socket = io();
+
+function sendMessage() {
+    const msg = document.getElementById("msg").value;
+
+    if(msg.trim() === "") return;
+
+    socket.emit("sendMessage", {
+        user: "Guest",
+        text: msg
+    });
+
+    document.getElementById("msg").value = "";
+}
