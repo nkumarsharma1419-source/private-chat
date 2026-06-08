@@ -1,3 +1,4 @@
+console.log("NEW CHAT JS LOADED");
 const socket = io();
 const user = localStorage.getItem("user") || "Guest";
 const message = document.getElementById("msg");
