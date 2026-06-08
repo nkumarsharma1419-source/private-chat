@@ -1,0 +1,13 @@
+<!DOCTYPE html><html><body>
+<h2>Private Chat Login</h2>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<script>
+function login(){
+const u=user.value,p=pass.value;
+if((u==='Naimish'&&p==='12345')||(u==='Friend'&&p==='54321')){
+localStorage.setItem('user',u);location='index.html';
+}else alert('Wrong Login');
+}
+</script></body></html>
