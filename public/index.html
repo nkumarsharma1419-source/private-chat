@@ -1,6 +1,19 @@
-<!DOCTYPE html><html><head>
-<link rel="stylesheet" href="style.css"></head><body>
-<h2>Private Chat</h2><ul id="messages"></ul>
-<input id="message"><button onclick="send()">Send</button>
-<script src="/socket.io/socket.io.js"></script>
-<script src="chat.js"></script></body></html>
+<div class="container">
+    <div class="chat-box">
+
+        <div class="header">
+            <h1>🚀 Private Galaxy Chat</h1>
+            <div class="status">🟢 Online</div>
+        </div>
+
+        <div id="messages"></div>
+
+        <div class="typing" id="typing"></div>
+
+        <div class="input-area">
+            <input id="msg" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+
+    </div>
+</div>
