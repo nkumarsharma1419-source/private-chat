@@ -1,8 +1,29 @@
+const socket = io();
+
+const user = localStorage.getItem("user") || "Guest";
+const message = document.getElementById("msg");
+const messages = document.getElementById("messages");
+
+socket.on("loadMessages", msgs => {
+  msgs.forEach(addMessage);
+});
+
+socket.on("newMessage", addMessage);
+
+function sendMessage() {
+  if (!message.value.trim()) return;
+
+  socket.emit("sendMessage", {
+    sender: user,
+    text: message.value
+  });
+
+  message.value = "";
+}
+
 function addMessage(msg) {
-
-  const messages = document.getElementById("messages");
-
   const div = document.createElement("div");
+
   div.classList.add("message");
 
   div.innerHTML = `
