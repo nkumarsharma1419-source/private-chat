@@ -1,20 +1,21 @@
-console.log("NEW CHAT JS LOADED");
-const socket = io();
-const user = localStorage.getItem("user") || "Guest";
-const message = document.getElementById("msg");
-const messages = document.getElementById("messages");
-socket.on('loadMessages', m => m.forEach(addMessage));
-socket.on('newMessage', addMessage);
-window.sendMessage = function() {
-    socket.emit('sendMessage', {
-        sender: user,
-        text: message.value
-    });
-
-    message.value = "";
-}
 function addMessage(msg) {
-    const li = document.createElement('li');
-    li.innerHTML = '<b>' + msg.sender + '</b>: ' + msg.text;
-    messages.appendChild(li);
+
+  const messages = document.getElementById("messages");
+
+  const div = document.createElement("div");
+  div.classList.add("message");
+
+  div.innerHTML = `
+    <div class="avatar">
+      ${msg.sender.charAt(0).toUpperCase()}
+    </div>
+
+    <div class="content">
+      <div class="username">${msg.sender}</div>
+      <div class="text">${msg.text}</div>
+    </div>
+  `;
+
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
 }
