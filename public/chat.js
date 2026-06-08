@@ -4,7 +4,7 @@ const message = document.getElementById("msg");
 const messages = document.getElementById("messages");
 socket.on('loadMessages', m => m.forEach(addMessage));
 socket.on('newMessage', addMessage);
-function sendMessage() {
+window.sendMessage = function() {
     socket.emit('sendMessage', {
         sender: user,
         text: message.value
