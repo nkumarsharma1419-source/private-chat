@@ -1,81 +1,73 @@
 const socket = io();
 
-const user = localStorage.getItem("user") || "Guest";
-const message = document.getElementById("msg");
-const messages = document.getElementById("messages");
+const user =
+  localStorage.getItem("user") || "Guest";
 
-socket.on("loadMessages", msgs => {
+const msgInput =
+  document.getElementById("msg");
+
+const messages =
+  document.getElementById("messages");
+
+const sendBtn =
+  document.getElementById("sendBtn");
+
+socket.on("loadMessages", (msgs) => {
   msgs.forEach(addMessage);
 });
 
-socket.on("newMessage", addMessage);
+socket.on("newMessage", (msg) => {
+  addMessage(msg);
+});
+
+sendBtn.addEventListener(
+  "click",
+  sendMessage
+);
+
+msgInput.addEventListener(
+  "keypress",
+  (e) => {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  }
+);
 
 function sendMessage() {
-  if (!message.value.trim()) return;
+  const text =
+    msgInput.value.trim();
+
+  if (!text) return;
 
   socket.emit("sendMessage", {
     sender: user,
-    text: message.value
+    text: text
   });
 
-  message.value = "";
+  msgInput.value = "";
 }
 
 function addMessage(msg) {
-  const messages = document.getElementById("messages");
+  const div =
+    document.createElement("div");
 
-  const div = document.createElement("div");
+  div.classList.add("message");
 
-  const me =
-    msg.sender ===
-    (localStorage.getItem("user") || "Guest");
+  if (msg.sender === user) {
+    div.classList.add("me");
+  } else {
+    div.classList.add("other");
+  }
 
-  div.className =
-    "message " + (me ? "me" : "other");
-
-  const time =
-    new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-
-  div.innerHTML = `
-      <div class="sender">
-        ${msg.sender}
-      </div>
-
-      <div>
-        ${msg.text}
-      </div>
-
-      <div class="time">
-        ${time}
-      </div>
-  `;
+  div.innerHTML =
+    "<strong>" +
+    msg.sender +
+    "</strong><br>" +
+    msg.text;
 
   messages.appendChild(div);
+
   messages.scrollTop =
     messages.scrollHeight;
 }
-
-  messages.appendChild(div);
-  messages.scrollTop = messages.scrollHeight;
-}
-const typing = document.getElementById('typing');
-
-message.addEventListener('input', () => {
-    socket.emit('typing', user);
-});
-
-socket.on('typing', (name) => {
-    typing.innerText = `${name} is typing...`;
-
-    clearTimeout(window.typingTimer);
-
-    window.typingTimer = setTimeout(() => {
-        typing.innerText = '';
-    }, 1500);
-});
-socket.on('onlineUsers', (count) => {
-    document.getElementById('count').innerText = count;
-});
