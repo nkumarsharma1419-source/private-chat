@@ -22,20 +22,41 @@ function sendMessage() {
 }
 
 function addMessage(msg) {
+  const messages = document.getElementById("messages");
+
   const div = document.createElement("div");
 
-  div.classList.add("message");
+  const me =
+    msg.sender ===
+    (localStorage.getItem("user") || "Guest");
+
+  div.className =
+    "message " + (me ? "me" : "other");
+
+  const time =
+    new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
 
   div.innerHTML = `
-    <div class="avatar">
-      ${msg.sender.charAt(0).toUpperCase()}
-    </div>
+      <div class="sender">
+        ${msg.sender}
+      </div>
 
-    <div class="content">
-      <div class="username">${msg.sender}</div>
-      <div class="text">${msg.text}</div>
-    </div>
+      <div>
+        ${msg.text}
+      </div>
+
+      <div class="time">
+        ${time}
+      </div>
   `;
+
+  messages.appendChild(div);
+  messages.scrollTop =
+    messages.scrollHeight;
+}
 
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
