@@ -1,73 +1,104 @@
 const socket = io();
 
 const user =
-  localStorage.getItem("user") || "Guest";
+localStorage.getItem("user")
+|| "Guest";
 
-const msgInput =
-  document.getElementById("msg");
+const msg =
+document.getElementById("msg");
 
 const messages =
-  document.getElementById("messages");
+document.getElementById("messages");
 
 const sendBtn =
-  document.getElementById("sendBtn");
-
-socket.on("loadMessages", (msgs) => {
-  msgs.forEach(addMessage);
-});
-
-socket.on("newMessage", (msg) => {
-  addMessage(msg);
-});
+document.getElementById("sendBtn");
 
 sendBtn.addEventListener(
-  "click",
-  sendMessage
+"click",
+sendMessage
 );
 
-msgInput.addEventListener(
-  "keypress",
-  (e) => {
-    if (e.key === "Enter") {
-      sendMessage();
-    }
+msg.addEventListener(
+"keypress",
+function(e){
+  if(e.key==="Enter"){
+    sendMessage();
   }
+}
 );
 
-function sendMessage() {
+socket.on(
+"loadMessages",
+(data)=>{
+  data.forEach(addMessage);
+}
+);
+
+socket.on(
+"newMessage",
+addMessage
+);
+
+function sendMessage(){
+
   const text =
-    msgInput.value.trim();
+  msg.value.trim();
 
-  if (!text) return;
+  if(text===""){
+    return;
+  }
 
-  socket.emit("sendMessage", {
-    sender: user,
-    text: text
-  });
+  socket.emit(
+    "sendMessage",
+    {
+      sender:user,
+      text:text
+    }
+  );
 
-  msgInput.value = "";
+  msg.value="";
 }
 
-function addMessage(msg) {
+function addMessage(data){
+
   const div =
-    document.createElement("div");
+  document.createElement("div");
 
-  div.classList.add("message");
+  div.classList.add(
+    "message"
+  );
 
-  if (msg.sender === user) {
+  if(
+    data.sender===user
+  ){
     div.classList.add("me");
-  } else {
+  }
+  else{
     div.classList.add("other");
   }
 
-  div.innerHTML =
-    "<strong>" +
-    msg.sender +
-    "</strong><br>" +
-    msg.text;
+  div.innerHTML=
+  `
+  <div class="sender">
+  ${data.sender}
+  </div>
+
+  <div>
+  ${data.text}
+  </div>
+  `;
 
   messages.appendChild(div);
 
   messages.scrollTop =
-    messages.scrollHeight;
+  messages.scrollHeight;
 }
+socket.on(
+  "onlineUsers",
+  (count)=>{
+    document.getElementById(
+      "onlineCount"
+    ).innerText =
+    count + " Online";
+  }
+);
