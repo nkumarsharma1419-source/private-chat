@@ -40,3 +40,21 @@ function addMessage(msg) {
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
 }
+const typing = document.getElementById('typing');
+
+message.addEventListener('input', () => {
+    socket.emit('typing', user);
+});
+
+socket.on('typing', (name) => {
+    typing.innerText = `${name} is typing...`;
+
+    clearTimeout(window.typingTimer);
+
+    window.typingTimer = setTimeout(() => {
+        typing.innerText = '';
+    }, 1500);
+});
+socket.on('onlineUsers', (count) => {
+    document.getElementById('count').innerText = count;
+});

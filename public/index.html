@@ -1,19 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Private Galaxy Chat</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="container">
-    <div class="chat-box">
+<div class="header">
 
-        <div class="header">
-            <h1>🚀 Private Galaxy Chat</h1>
-            <div class="status">🟢 Online</div>
+    <div class="left-header">
+        <h1>🚀 Private Galaxy Chat</h1>
+
+        <div class="online">
+            <span class="dot"></span>
+            <span id="status">Online</span>
         </div>
+    </div>
 
-       <div id="messages"></div>
+    <div class="user-count">
+        👥 <span id="count">0</span> Online
+    </div>
+
+</div>
+
+<div id="messages"></div>
+
+<div id="typing" class="typing"></div>
 
 <div class="input-area">
     <input id="msg" placeholder="Message Private Galaxy Chat">
